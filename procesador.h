@@ -3,17 +3,16 @@
 
 #include <iostream>
 #include <string>
-#include <list>
-#include "archivos.h"
-#include "resultados.h"
+#include "thread_tda.h"
+#include "monitor_archv.h"
 
-class Procesador{
+class Procesar : public Thread { 
 private:
-	Archivos* ptr_archivos;
-	Resultados* ptr_resultados;
+	MonitorArchv &monitor;
 public:
-	Procesador(Archivos* archivos, Resultados* resultados);
-	void procesar();
-	~Procesador();
+	Procesar(MonitorArchv &monitor_archv);
+	virtual void run() override;
+	~Procesar(){};
 };
+
 #endif

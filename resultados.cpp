@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <thread>
+#include <algorithm>
 #include "diccionario.h"
 #include "resultados.h"
 
@@ -10,22 +12,33 @@ Resultados::Resultados(){
 	msj_sin_uso = " FAIL: unused instructions detected";
 }
 
-void Resultados::agregarArchivo(std::string archivo){
-	lista_archivos.push_back(archivo);
-	dic_archivos.agregarClave(archivo, OK);
+void Resultados::agregarEnOrden(std::string archivo_nuevo){
+	if (lista_archivos.size() > 0){
+		std::list<std::string>::iterator it;
+		for (it = lista_archivos.begin(); it != lista_archivos.end(); it++){
+			std::string archivo = *it;
+			if (archivo > archivo_nuevo){
+				lista_archivos.insert(it, archivo_nuevo);
+				return;
+
+			}
+		}
+	}
+	lista_archivos.push_back(archivo_nuevo);
 }
 
-void Resultados::tieneCiclos(std::string archivo){
-	dic_archivos.cambiarClave(archivo, CICLO);
-}
-
-void Resultados::tieneInstrSinUso(std::string archivo){
-	dic_archivos.cambiarClave(archivo, SINUSO);
+void Resultados::agregarArchivo(std::string archv, bool ciclos, bool sin_uso){
+	agregarEnOrden(archv);
+	if(ciclos){
+		dic_archivos.agregarClave(archv, CICLO);
+	}else if (sin_uso){
+		dic_archivos.agregarClave(archv, SINUSO);
+	}else{
+		dic_archivos.agregarClave(archv, OK);
+	}
 }
 
 void Resultados::mostrarResultados(){
-	lista_archivos.sort();
-
 	for (std::string archivo : lista_archivos){
 		int resultado = dic_archivos.getValor(archivo);
 		if (resultado == OK){

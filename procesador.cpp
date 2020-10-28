@@ -1,30 +1,20 @@
 #include <iostream>
 #include <string>
-#include <list>
 #include "procesador.h"
-#include "archivos.h"
-#include "resultados.h"
 #include "grafo_ebpf.h"
 
-Procesador::Procesador(Archivos* archivos, Resultados* resultados){
-	ptr_archivos = archivos;
-	ptr_resultados = resultados;
+Procesar::Procesar(MonitorArchv &monitor_archv) : monitor(monitor_archv) {
 }
 
-void Procesador::procesar(){
-	while(ptr_archivos->hayArchivos()){
-		std::string archivo = ptr_archivos->getNuevoArchivo();
-		
-		GrafoEbpf grafo = GrafoEbpf(archivo);
-		ptr_resultados->agregarArchivo(archivo);
+void Procesar::run(){
+	bool continuar = true;
 
-		if (grafo.hayCiclos()){
-			ptr_resultados->tieneCiclos(archivo);
-		} else if (grafo.hayInstrSinUso()){
-			ptr_resultados->tieneInstrSinUso(archivo);
+	while(continuar){
+		std::string archv = monitor.RecvArchivoProtected();
+		if (archv.size() == 0){
+			return;
 		}
+		GrafoEbpf gf = GrafoEbpf(archv);
+		monitor.sendResProtected(archv, gf.hayCiclos(), gf.hayInstrSinUso());
 	}
-}
-
-Procesador::~Procesador(){
 }
