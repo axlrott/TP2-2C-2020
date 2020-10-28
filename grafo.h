@@ -9,7 +9,7 @@ private:
 	int id;
 	std::list<Nodo*> lista_ady;
 public:
-	Nodo(int identificador);
+	explicit Nodo(int identificador);
 	Nodo(const Nodo &copy) = delete;
 	Nodo operator=(const Nodo &copy) = delete;
 	void agregarAdyacencia(Nodo* adyacente);

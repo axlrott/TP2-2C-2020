@@ -3,8 +3,6 @@
 #include <bits/stdc++.h> 
 #include "lector_ebpf.h"
 
-#define JMP {"jmp", "ja", "jeq", "jneq","jne", "jlt", "jle", "jgt", "jge", "jset"}
-
 bool LectorEbpf::contieneTag(std::string linea){
 	for (char caracter : linea){
 		if (caracter == ':'){
@@ -19,7 +17,7 @@ bool LectorEbpf::contieneReturn(std::string palabra){
 }
 
 bool LectorEbpf::contieneSalto(std::string palabra){
-	for(std::string salto : JMP){
+	for(std::string salto : jmp){
 		if(palabra.compare(salto) == 0){
 			return true;
 		}
@@ -40,6 +38,7 @@ int LectorEbpf::cantidadArg(std::string linea){
 
 
 LectorEbpf::LectorEbpf(std::string linea){
+	jmp = {"jmp", "ja", "jeq", "jneq","jne", "jlt", "jle", "jgt", "jge", "jset"};
 	isJmpInc = false;
 	isReturn = false;
 	bool linea_tag = contieneTag(linea);

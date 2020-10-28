@@ -22,7 +22,7 @@ private:
 	void procesarLineas(std::string linea);
 	void crearGrafo();
 public:
-	GrafoEbpf(std::string archivo);
+	explicit GrafoEbpf(std::string archivo);
 	bool hayCiclos();
 	bool hayInstrSinUso();
 	std::string getNombreArchivo();

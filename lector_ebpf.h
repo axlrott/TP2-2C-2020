@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <string>
+#include <list>
 
 class LectorEbpf{
 private:
+	std::list<std::string> jmp;
 	std::string tag;
 	std::string arg1;
 	std::string arg2;
@@ -16,7 +18,7 @@ private:
 	bool contieneSalto(std::string palabra);
 	int cantidadArg(std::string linea);
 public:
-	LectorEbpf(std::string linea);
+	explicit LectorEbpf(std::string linea);
 	bool hayTag() const;
 	std::string getTag();
 	bool hayJmp() const;

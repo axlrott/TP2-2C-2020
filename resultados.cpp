@@ -20,7 +20,6 @@ void Resultados::agregarEnOrden(std::string archivo_nuevo){
 			if (archivo > archivo_nuevo){
 				lista_archivos.insert(it, archivo_nuevo);
 				return;
-
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <string>
+#include <list>
 #include "grafo.h"
 #include "lector_ebpf.h"
 #include "grafo_ebpf.h"
