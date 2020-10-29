@@ -29,8 +29,8 @@ private:
 	size_t cant_nodos;
 	std::list<Nodo*> lista_nodos;
 	Nodo* getNodo(int id);
-	bool hayNodo(int id);
-	bool yaVisite(std::list<int>* vistos, Nodo* nodo);
+	bool hayNodo(int id) const;
+	bool yaVisite(std::list<int>* vistos, Nodo* nodo) const;
 	bool hasCiclo(std::list<int> ids, Nodo* ady, std::list<int>* vistos);
 public:
 	Grafo();

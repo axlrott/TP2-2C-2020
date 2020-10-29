@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <string>
-#include <list>
+#include <vector>
 #include "grafo.h"
 #include "lector_ebpf.h"
 #include "grafo_ebpf.h"
@@ -16,7 +16,7 @@ void GrafoEbpf::procesarLineas(std::string linea){
 	if(lector.hayTag()){
 		tag = lector.getTag();
 		dicTags.agregarClave(tag, id_nodo);
-		std::list<int> adyacencias = dicTagsEnEspera.getAllValores(tag);
+		std::vector<int> adyacencias = dicTagsEnEspera.getAllValores(tag);
 		for (int id_origen : adyacencias){
 			grafoEbpf->addAdy(id_origen, id_nodo);
 		}
@@ -71,17 +71,17 @@ GrafoEbpf::GrafoEbpf(std::string archivo){
 	crearGrafo();
 }
 
-bool GrafoEbpf::hayCiclos(){
+bool GrafoEbpf::hayCiclos() const{
 	int flag = grafoEbpf->dfsErrores();
 	return (flag == FLAG_CICLO);
 }
 
-bool GrafoEbpf::hayInstrSinUso(){
+bool GrafoEbpf::hayInstrSinUso() const{
 	int flag = grafoEbpf->dfsErrores();
 	return (flag == FLAG_SOLITARIO);
 }
 
-std::string GrafoEbpf::getNombreArchivo(){
+std::string GrafoEbpf::getNombreArchivo() const{
 	return nombre_archivo;
 }
 

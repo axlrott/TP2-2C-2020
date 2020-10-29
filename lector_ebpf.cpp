@@ -3,7 +3,7 @@
 #include <bits/stdc++.h> 
 #include "lector_ebpf.h"
 
-bool LectorEbpf::contieneTag(std::string linea){
+bool LectorEbpf::contieneTag(std::string linea) const{
 	for (char caracter : linea){
 		if (caracter == ':'){
 			return true;
@@ -12,11 +12,11 @@ bool LectorEbpf::contieneTag(std::string linea){
 	return false;
 }
 
-bool LectorEbpf::contieneReturn(std::string palabra){
+bool LectorEbpf::contieneReturn(std::string palabra) const{
 	return (palabra.compare("ret") == 0);
 }
 
-bool LectorEbpf::contieneSalto(std::string palabra){
+bool LectorEbpf::contieneSalto(std::string palabra) const{
 	for(std::string salto : jmp){
 		if(palabra.compare(salto) == 0){
 			return true;
@@ -25,7 +25,7 @@ bool LectorEbpf::contieneSalto(std::string palabra){
 	return false;
 }
 
-int LectorEbpf::cantidadArg(std::string linea){
+int LectorEbpf::cantidadArg(std::string linea) const{
 	int cant_arg = 1;
 
 	for(char caracter : linea){
@@ -77,7 +77,7 @@ bool LectorEbpf::hayTag() const{
 	return (tag.size() > 0);
 }
 
-std::string LectorEbpf::getTag(){
+std::string LectorEbpf::getTag() const{
 	return tag;
 }
 
@@ -93,11 +93,11 @@ bool LectorEbpf::hayReturn() const{
 	return isReturn;
 }
 
-std::string LectorEbpf::getArg1(){
+std::string LectorEbpf::getArg1() const{
 	return arg1;
 }
 
-std::string LectorEbpf::getArg2(){
+std::string LectorEbpf::getArg2() const{
 	return arg2;
 }
 

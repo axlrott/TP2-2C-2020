@@ -37,7 +37,7 @@ void Resultados::agregarArchivo(std::string archv, bool ciclos, bool sin_uso){
 	}
 }
 
-void Resultados::mostrarResultados(){
+void Resultados::mostrarResultados() const{
 	for (std::string archivo : lista_archivos){
 		int resultado = dic_archivos.getValor(archivo);
 		if (resultado == OK){

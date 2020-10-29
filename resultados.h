@@ -20,7 +20,7 @@ private:
 public:
 	Resultados();
 	void agregarArchivo(std::string archv, bool ciclos, bool sin_uso);
-	void mostrarResultados();
+	void mostrarResultados() const;
 	~Resultados();
 };
 

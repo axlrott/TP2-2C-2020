@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <list>
+#include <vector>
 #include "diccionario.h"
 
 Diccionario::Diccionario(){
@@ -11,7 +11,7 @@ void Diccionario::agregarClave(std::string clave, int valor){
 	valores.push_back(valor);
 }
 
-bool Diccionario::hayClave(std::string clave){
+bool Diccionario::hayClave(std::string clave) const{
 	for (std::string clave_almacenada : claves){
 		if (clave_almacenada.compare(clave) == 0){
 			return true;
@@ -20,21 +20,21 @@ bool Diccionario::hayClave(std::string clave){
 	return false;
 }
 
-int Diccionario::getValor(std::string clave){
-	std::list<int>::iterator iter = valores.begin();
+int Diccionario::getValor(std::string clave) const{
+	int pos = 0;
 
 	for (std::string clave_almacenada : claves){
 		if (clave_almacenada.compare(clave) == 0){
-			int valor = *iter;
+			int valor = valores.at(pos);
 			return valor;
 		}
-		iter++;
+		pos++;
 	}
 	return -1;
 }
 
 void Diccionario::cambiarClave(std::string clave, int valor){
-	std::list<int>::iterator iter = valores.begin();
+	std::vector<int>::iterator iter = valores.begin();
 
 	for (std::string clave_almacenada : claves){
 		if (clave_almacenada.compare(clave) == 0){
@@ -46,16 +46,16 @@ void Diccionario::cambiarClave(std::string clave, int valor){
 	agregarClave(clave, valor);
 }
 
-std::list<int> Diccionario::getAllValores(std::string clave){
-	std::list<int> lista_valores;
-	std::list<int>::iterator iter = valores.begin();
+std::vector<int> Diccionario::getAllValores(std::string clave) const{
+	std::vector<int> lista_valores;
+	int pos = 0;
 
 	for (std::string clave_almacenada : claves){
 		if (clave_almacenada.compare(clave) == 0){
-			int valor = *iter;
+			int valor = valores.at(pos);
 			lista_valores.push_back(valor);
 		}
-		iter++;
+		pos++;
 	}
 	return lista_valores;
 }

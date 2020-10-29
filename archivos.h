@@ -13,7 +13,7 @@ private:
 public:
 	Archivos();
 	void agregarArchivo(std::string archivo);
-	bool hayArchivos();
+	bool hayArchivos() const;
 	std::string getNuevoArchivo();
 	~Archivos();
 };

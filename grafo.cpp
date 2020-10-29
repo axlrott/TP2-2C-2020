@@ -48,7 +48,7 @@ void Grafo::addNodo(int id){
 	}
 }
 
-bool Grafo::hayNodo(int id){
+bool Grafo::hayNodo(int id) const{
 	for(Nodo* nodo : lista_nodos){
 		if (nodo->getId() == id){
 			return true;
@@ -74,7 +74,7 @@ void Grafo::addAdy(int id1, int id2){
 	}
 }
 
-bool Grafo::yaVisite(std::list<int>* vistos, Nodo* nodo){
+bool Grafo::yaVisite(std::list<int>* vistos, Nodo* nodo) const{
 	std::list<int>::iterator iterVis;
 	iterVis = std::find(vistos->begin(), vistos->end(), nodo->getId());
 	return (iterVis != vistos->end());

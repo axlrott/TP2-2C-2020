@@ -23,9 +23,9 @@ private:
 	void crearGrafo();
 public:
 	explicit GrafoEbpf(std::string archivo);
-	bool hayCiclos();
-	bool hayInstrSinUso();
-	std::string getNombreArchivo();
+	bool hayCiclos() const;
+	bool hayInstrSinUso() const;
+	std::string getNombreArchivo() const;
 	~GrafoEbpf();
 };
 #endif

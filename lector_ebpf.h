@@ -5,6 +5,10 @@
 #include <string>
 #include <list>
 
+/*La clase LectorEbpf lee una cadena de caracteres que representa
+una linea de codigo un archivo bpf. Esta clase sirve para detectar si hay
+saltos, los argumentos de ese salto y si la linea de codigo
+contiene alguna etiqueta*/
 class LectorEbpf{
 private:
 	std::list<std::string> jmp;
@@ -13,19 +17,19 @@ private:
 	std::string arg2;
 	bool isJmpInc;
 	bool isReturn;
-	bool contieneTag(std::string linea);
-	bool contieneReturn(std::string palabra);
-	bool contieneSalto(std::string palabra);
-	int cantidadArg(std::string linea);
+	bool contieneTag(std::string linea) const;
+	bool contieneReturn(std::string palabra) const;
+	bool contieneSalto(std::string palabra) const;
+	int cantidadArg(std::string linea) const;
 public:
 	explicit LectorEbpf(std::string linea);
 	bool hayTag() const;
-	std::string getTag();
+	std::string getTag() const;
 	bool hayJmp() const;
 	bool hayJmpInc() const;
 	bool hayReturn() const;
-	std::string getArg1();
-	std::string getArg2();
+	std::string getArg1() const;
+	std::string getArg2() const;
 	~LectorEbpf();
 };
 
