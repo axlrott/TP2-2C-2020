@@ -1,28 +1,27 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <string>
 #include <vector>
+#include <map>
+#include <list>
 #include "grafo.h"
 #include "lector_ebpf.h"
 #include "grafo_ebpf.h"
-#include "diccionario.h"
 
 void GrafoEbpf::procesarTag(std::string tag){
-	dicTags.agregarClave(tag, id_nodo);
-	std::vector<int> adyacencias = dicTagsEnEspera.getAllValores(tag);
-	for (int id_origen : adyacencias){
+	dicTags[tag] = id_nodo;
+	for (int id_origen : dicTagsEnEspera[tag]){
 		grafoEbpf->addAdy(id_origen, id_nodo);
 	}
 }
 
 void GrafoEbpf::agregarAdyacencias(std::string tag){
 	if(tag.size() > 0){
-		if (dicTags.hayClave(tag)){
-			int ady = dicTags.getValor(tag);
+		if (dicTags.count(tag) > 0){
+			int ady = dicTags[tag];
 			grafoEbpf->addAdy(id_nodo, ady);
 		}else{
-			dicTagsEnEspera.agregarClave(tag, id_nodo);
+			dicTagsEnEspera[tag].push_back(id_nodo);
 		}
 	}
 }

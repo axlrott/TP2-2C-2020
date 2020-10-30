@@ -3,7 +3,7 @@
 #include <list>
 #include <thread>
 #include <algorithm>
-#include "diccionario.h"
+#include <map>
 #include "resultados.h"
 
 Resultados::Resultados(){
@@ -29,17 +29,17 @@ void Resultados::agregarEnOrden(std::string archivo_nuevo){
 void Resultados::agregarArchivo(std::string archv, bool ciclos, bool sin_uso){
 	agregarEnOrden(archv);
 	if(ciclos){
-		dic_archivos.agregarClave(archv, CICLO);
+		dic_archivos[archv] = CICLO;
 	}else if (sin_uso){
-		dic_archivos.agregarClave(archv, SINUSO);
+		dic_archivos[archv] = SINUSO;
 	}else{
-		dic_archivos.agregarClave(archv, OK);
+		dic_archivos[archv] = OK;;
 	}
 }
 
 void Resultados::mostrarResultados() const{
 	for (std::string archivo : lista_archivos){
-		int resultado = dic_archivos.getValor(archivo);
+		int resultado = dic_archivos.at(archivo);
 		if (resultado == OK){
 			std::cout << archivo << msj_ok << std::endl;
 		} else if (resultado == CICLO){

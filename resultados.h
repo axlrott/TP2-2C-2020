@@ -4,15 +4,15 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <map>
 #include <mutex>
-#include "diccionario.h"
 
 enum TIPORESULTADO {OK, CICLO, SINUSO};
 
 class Resultados{
 private:
 	std::list<std::string> lista_archivos;
-	Diccionario dic_archivos;
+	std::map<std::string, int> dic_archivos;
 	std::string msj_ok;
 	std::string msj_ciclo;
 	std::string msj_sin_uso;

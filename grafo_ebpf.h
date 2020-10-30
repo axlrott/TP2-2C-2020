@@ -4,9 +4,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
+#include <list>
 #include "grafo.h"
 #include "lector_ebpf.h"
-#include "diccionario.h"
 
 /*Clase que contiene un grafo de un proceso en BPF
 donde cada nodo representa una instruccion y sus adyacencias
@@ -16,8 +17,8 @@ private:
 	int id_nodo;
 	bool pto_muerto;
 	std::string nombre_archivo;
-	Diccionario dicTags;
-	Diccionario dicTagsEnEspera;
+	std::map<std::string, int> dicTags;
+	std::map<std::string, std::list<int>> dicTagsEnEspera;
 	Grafo* grafoEbpf;
 	void agregarAdyacencias(std::string tag);
 	void procesarTag(std::string tag);
