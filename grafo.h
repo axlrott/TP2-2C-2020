@@ -21,7 +21,7 @@ public:
 };
 
 enum FLAG_DFS{
-	FLAG_OK, FLAG_CICLO, FLAG_SOLITARIO		
+	FLAG_OK, FLAG_CICLO, FLAG_SINUSO		
 	};
 
 class Grafo{
@@ -30,15 +30,18 @@ private:
 	std::list<Nodo*> lista_nodos;
 	Nodo* getNodo(int id);
 	bool hayNodo(int id) const;
-	bool yaVisite(std::list<int>* vistos, Nodo* nodo) const;
-	bool hasCiclo(std::list<int> ids, Nodo* ady, std::list<int>* vistos);
+	bool yaVisite(std::list<int> vistos, Nodo* nodo) const;
+	bool hasCiclo(std::list<int> ids, Nodo* ady, std::list<int> &vistos);
 public:
 	Grafo();
 	Grafo(const Grafo &copy) = delete;
 	Grafo operator=(const Grafo &copy) = delete;
 	void addNodo(int id);
 	void addAdy(int id1, int id2);
-	int dfsErrores();
+	int busquedaDFS();
+	/*Esta funcion busca si hay ciclos o instrucciones sin uso en el grafo
+	mediante DFS, devuelve un FLAG_DFS del tipo CICLO si hay ciclos, 
+	SINUSO si hay una instruccion sin uso y OK si no se encontro nada*/
 	~Grafo();
 };
 

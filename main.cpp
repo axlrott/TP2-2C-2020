@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]){
 	int cant_archivos = argc-2;
 	std::vector<Thread*> threads;
 
-	for (int i=0; i < cant_archivos; i++){
+	for (int i=0; i < cant_archivos; ++i){
 		archivos.agregarArchivo(argv[i+2]);
 	}
 	MonitorArchv monitor_archivos(&archivos, &res);

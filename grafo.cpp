@@ -74,20 +74,20 @@ void Grafo::addAdy(int id1, int id2){
 	}
 }
 
-bool Grafo::yaVisite(std::list<int>* vistos, Nodo* nodo) const{
+bool Grafo::yaVisite(std::list<int> vistos, Nodo* nodo) const{
 	std::list<int>::iterator iterVis;
-	iterVis = std::find(vistos->begin(), vistos->end(), nodo->getId());
-	return (iterVis != vistos->end());
+	iterVis = std::find(vistos.begin(), vistos.end(), nodo->getId());
+	return (iterVis != vistos.end());
 }
 
-bool Grafo::hasCiclo(std::list<int> ids, Nodo* ady, std::list<int>* vistos){
+bool Grafo::hasCiclo(std::list<int> ids, Nodo* ady, std::list<int> &vistos){
 	for (int id : ids){
-		if ((ady)->esAdy(id)){
+		if (ady->esAdy(id)){
 			return true;	
 		}
 	}
 	if (!yaVisite(vistos, ady)){
-		vistos->push_back(ady->getId());
+		vistos.push_back(ady->getId());
 
 		if (ady->cantAdy() > 0){
 			std::list<Nodo*> list_ady = ady->getAdy();
@@ -103,26 +103,25 @@ bool Grafo::hasCiclo(std::list<int> ids, Nodo* ady, std::list<int>* vistos){
 	return false;
 }
 
-int Grafo::dfsErrores(){
+int Grafo::busquedaDFS(){
 	int salida = FLAG_OK;
 	std::list<int> lista_ids;
-	std::list<int>* visitados = new std::list<int>();
+	std::list<int> visitados;
 	Nodo* nodo_base = lista_nodos.front();
 	std::list<Nodo*> adyacentes = nodo_base->getAdy();
 
 	lista_ids.push_back(nodo_base->getId());
-	visitados->push_back(nodo_base->getId());
+	visitados.push_back(nodo_base->getId());
 
 	for(Nodo* nodo_ady : adyacentes){
 		if (hasCiclo(lista_ids, nodo_ady, visitados)){
 			salida = FLAG_CICLO;
 		}
 	}
-	bool nodo_solo = visitados->size() != cant_nodos;
-	if (salida != 1 && nodo_solo){
-		salida = FLAG_SOLITARIO;
+	bool nodo_solo = visitados.size() != cant_nodos;
+	if (salida != FLAG_CICLO && nodo_solo){
+		salida = FLAG_SINUSO;
 	}
-	delete visitados;
 	return salida;
 }
 

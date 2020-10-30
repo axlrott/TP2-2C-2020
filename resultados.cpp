@@ -15,7 +15,7 @@ Resultados::Resultados(){
 void Resultados::agregarEnOrden(std::string archivo_nuevo){
 	if (lista_archivos.size() > 0){
 		std::list<std::string>::iterator it;
-		for (it = lista_archivos.begin(); it != lista_archivos.end(); it++){
+		for (it = lista_archivos.begin(); it != lista_archivos.end(); ++it){
 			std::string archivo = *it;
 			if (archivo > archivo_nuevo){
 				lista_archivos.insert(it, archivo_nuevo);

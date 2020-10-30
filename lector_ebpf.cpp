@@ -36,6 +36,24 @@ int LectorEbpf::cantidadArg(std::string linea) const{
 	return cant_arg;
 }
 
+void LectorEbpf::tomarArgs(std::istringstream &separador, int cant_arg){
+	std::string palabra;
+	separador >> palabra;
+
+	if (cant_arg == 1){
+		arg1 = palabra;
+		isJmpInc = true;
+	}else{
+		separador >> palabra;
+		arg1 = palabra;
+	}
+	if (cant_arg == 3){
+		arg1.erase(arg1.end()-1, arg1.end());
+		separador >> palabra;
+		arg2 = palabra;
+		isJmpInc = true;
+	}
+}
 
 LectorEbpf::LectorEbpf(std::string linea){
 	jmp = {"jmp", "ja", "jeq", "jneq","jne", "jlt", "jle", "jgt", "jge", "jset"};
@@ -43,31 +61,17 @@ LectorEbpf::LectorEbpf(std::string linea){
 	isReturn = false;
 	bool linea_tag = contieneTag(linea);
 	int cant_arg = cantidadArg(linea);
-	std::istringstream ss(linea);
+	std::istringstream separador(linea);
 	std::string palabra;
 
-	ss >> palabra;
-
+	separador >> palabra;
 	if (linea_tag){
 		palabra.erase(palabra.end()-1, palabra.end());
 		tag = palabra;
-		ss >> palabra;
+		separador >> palabra;
 	}
 	if (contieneSalto(palabra)){
-		ss >> palabra;
-		if (cant_arg == 1){
-			arg1 = palabra;
-			isJmpInc = true;
-		}else{
-			ss >> palabra;
-			arg1 = palabra;
-		}
-		if (cant_arg == 3){
-			arg1.erase(arg1.end()-1, arg1.end());
-			ss >> palabra;
-			arg2 = palabra;
-			isJmpInc = true;
-		}
+		tomarArgs(separador, cant_arg);
 	}else if (contieneReturn(palabra)){
 		isReturn = true;
 	}

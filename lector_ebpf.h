@@ -21,6 +21,7 @@ private:
 	bool contieneReturn(std::string palabra) const;
 	bool contieneSalto(std::string palabra) const;
 	int cantidadArg(std::string linea) const;
+	void tomarArgs(std::istringstream &ss, int cant_arg);
 public:
 	explicit LectorEbpf(std::string linea);
 	bool hayTag() const;

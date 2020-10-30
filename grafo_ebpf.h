@@ -19,6 +19,9 @@ private:
 	Diccionario dicTags;
 	Diccionario dicTagsEnEspera;
 	Grafo* grafoEbpf;
+	void agregarAdyacencias(std::string tag);
+	void procesarTag(std::string tag);
+	void revisarPtoMuerto(bool hay_return, bool hay_jmpInc);
 	void procesarLineas(std::string linea);
 	void crearGrafo();
 public:
