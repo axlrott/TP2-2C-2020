@@ -34,6 +34,9 @@ La clase **Resultados** sirve para almacenar resultados de un archivo, en el cas
 
 ### Thread y Lock:
 
+La clase Thread va a servir mas que nada para ser la clase padre de la clase procesador y asi poder utilizar Threads por herencia.
+La clase Lock va a ser creado para poder utilizar mutex en las funciones que sea necesario y es utilizada por la clase Monitor Archivos
+
 ### Monitor Archivos:
 
 Esta clase va a servir para ser el monitor de la clase **Archivos** y **Resultados**, cada vez que se reciba archivos de la clase **Archivos** o se manden resultados de archivos a la clase **Resultados** este utiliza un Lock para cuidar que cada thread lo haga de a uno a la vez para que no haya conflicots
@@ -41,5 +44,9 @@ Esta clase va a servir para ser el monitor de la clase **Archivos** y **Resultad
 ### Procesador:
 
 Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, va a crear la clase **Grafo eBPF** con ese archivo y luego va a volvar los resultados mediante el monitor a la clase **Resultados**
+
+### Main:
+
+El main va a tomar los parametros pasados, como la cantidad de threads a usar y los archivos BPF que se quieren verificar. Se van a crear Clases de **Archivos** y **Resultados**, a la clase **Archivos** se le iran pasando todos los archivos recibidos, luego se creara un **Monitor** con las clases **Archivos** y **Resultados** para luego ir creando los threads pedidos en la clase **Procesar** pasandoles el respectivo monitor como parametro, luego se hara join de todos los threads y terminado todo se pedira a la clase **Resultados** creada que muestre todos los resultados de los archivos.
 
 ![Diagrama1](imgs/Diagrama1.png)
