@@ -41,3 +41,5 @@ Esta clase va a servir para ser el monitor de la clase **Archivos** y **Resultad
 ### Procesador:
 
 Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, va a crear la clase **Grafo eBPF** con ese archivo y luego va a volvar los resultados mediante el monitor a la clase **Resultados**
+
+![Diagrama1](imgs/Diagrama1.png)
