@@ -49,6 +49,6 @@ Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se 
 
 El main va a tomar los parametros pasados, como la cantidad de threads a usar y los archivos BPF que se quieren verificar. Se van a crear Clases de **Archivos** y **Resultados**, a la clase **Archivos** se le iran pasando todos los archivos recibidos, luego se creara un **Monitor** con las clases **Archivos** y **Resultados** para luego ir creando los threads pedidos en la clase **Procesar** pasandoles el respectivo monitor como parametro, luego se hara join de todos los threads y terminado todo se pedira a la clase **Resultados** creada que muestre todos los resultados de los archivos.
 
-###Diagrama: 
+### Diagrama: 
 
 ![Diagrama1](imgs/Diagrama1.png)
