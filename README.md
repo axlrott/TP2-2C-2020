@@ -22,7 +22,7 @@ La clase **Lector eBPF** va a servir para leer una linea en string que represent
 
 ### Grafo eBPF:
 
-El **Grafo eBPF** va a recibir un string el cual es el nombre del archivo ".bpf" al cual crearle el grafo, esta clase va a contener una clase **Grafo** y una **Lector eBPF**, el cual usara para leer linea por linea el archivo especificado e ira creando el grafo en base a eso.
+El **Grafo eBPF** va a recibir un string el cual es el nombre del archivo ".bpf" al cual crearle el grafo, esta clase va a contener una clase **Grafo** y una **Lector eBPF**, el cual usara para leer linea por linea el archivo especificado e ira creando el grafo en base a eso, agregando nodos y adyacencias donde sea necesario, cuando termine de leer se cerrara el archivo.
 
 ### Archivos:
 
@@ -43,10 +43,12 @@ Esta clase va a servir para ser el monitor de la clase **Archivos** y **Resultad
 
 ### Procesador:
 
-Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, va a crear la clase **Grafo eBPF** con ese archivo y luego va a volvar los resultados mediante el monitor a la clase **Resultados**
+Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, se va a crear la clase **Grafo eBPF** a la cual se le pasara ese archivo asi se crea el grafo en base a ese archivo que va a ser un ".bpf" y con eso hecho luego se van a pasar los resultados mediante el monitor a la clase **Resultados**, esto se repetira hasta que ya no queden archivos por tomar de la clase **Archivos**
 
 ### Main:
 
 El main va a tomar los parametros pasados, como la cantidad de threads a usar y los archivos BPF que se quieren verificar. Se van a crear Clases de **Archivos** y **Resultados**, a la clase **Archivos** se le iran pasando todos los archivos recibidos, luego se creara un **Monitor** con las clases **Archivos** y **Resultados** para luego ir creando los threads pedidos en la clase **Procesar** pasandoles el respectivo monitor como parametro, luego se hara join de todos los threads y terminado todo se pedira a la clase **Resultados** creada que muestre todos los resultados de los archivos.
+
+###Diagrama: 
 
 ![Diagrama1](imgs/Diagrama1.png)

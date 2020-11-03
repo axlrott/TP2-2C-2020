@@ -9,6 +9,8 @@
 
 enum TIPORESULTADO {OK, CICLO, SINUSO};
 
+/*Clase Resultado que almacena archivos y sus resultados
+en base a si tuvieron ciclos o instrucciones sin uso*/
 class Resultados{
 private:
 	std::list<std::string> lista_archivos;

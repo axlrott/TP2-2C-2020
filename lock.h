@@ -3,6 +3,9 @@
 
 #include <mutex>
 
+/*Clase Lock basada en una vista en los
+ejemplos interactivos de la materia, hecha
+para hacer encapsulamiento del mutex*/
 class Lock {
 private:
 	std::mutex &m;

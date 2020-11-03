@@ -14,7 +14,7 @@ void Procesar::run(){
 		if (archv.size() == 0){
 			return;
 		}
-		GrafoEbpf gf = GrafoEbpf(archv);
+		GrafoEbpf gf(archv);
 		monitor.sendResProt(archv, gf.hayCiclos(), gf.hayInstrSinUso());
 	}
 }
