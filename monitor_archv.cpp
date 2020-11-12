@@ -1,21 +1,21 @@
 #include <string>
 #include "monitor_archv.h"
-#include "lock.h"
 
-MonitorArchv::MonitorArchv(Archivos* archivos, Resultados* resultados){
-	ptr_archv = archivos;
-	ptr_res = resultados;
+void MonitorArchv::agregarArchivo(std::string archv){
+	archivos.push_back(archv);
+}
+
+bool MonitorArchv::hayArchivos() const{
+	return (archivos.size() > 0);
 }
 
 std::string MonitorArchv::RecvArchivoProt(){
-	Lock l(m);
-	return (ptr_archv->getNuevoArchivo());
-}
+	std::unique_lock<std::mutex> lck(m);
 
-void MonitorArchv::sendResProt(std::string archv, bool ciclo, bool sin_uso){
-	Lock l(m);
-	ptr_res->agregarArchivo(archv, ciclo, sin_uso);
-}
-
-MonitorArchv::~MonitorArchv(){
+	if (hayArchivos()){
+		std::string archivo = archivos.front();
+		archivos.pop_front();
+		return archivo;
+	}
+	return "";
 }

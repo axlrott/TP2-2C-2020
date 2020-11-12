@@ -2,22 +2,19 @@
 #define MONITOR_ARCHV_T
 
 #include <string>
-#include "archivos.h"
-#include "resultados.h"
+#include <list>
+#include <mutex>
 
-/*La clase MonitorArchv tiene un puntero a una Clase Archivos y 
-a una clase Resultados, sirve para recibir archivos y para enviar
-resultados por threads utilizando mutex para evitar conflictos*/
 class MonitorArchv{
 private:
-	Archivos* ptr_archv;
-	Resultados* ptr_res;
+	std::list<std::string> archivos;
 	std::mutex m;
 public:
-	MonitorArchv(Archivos* archivos, Resultados* resultados);
+	MonitorArchv() {}
+	void agregarArchivo(std::string archv);
+	bool hayArchivos() const;
 	std::string RecvArchivoProt();
-	void sendResProt(std::string archv, bool ciclo, bool sin_uso);
-	~MonitorArchv();
+	~MonitorArchv() {}
 };
 
 #endif

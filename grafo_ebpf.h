@@ -19,17 +19,17 @@ private:
 	std::string nombre_archivo;
 	std::map<std::string, int> dicTags;
 	std::map<std::string, std::list<int>> dicTagsEnEspera;
-	Grafo* grafoEbpf;
+	Grafo grafoEbpf;
 	void agregarAdyacencias(std::string tag);
 	void procesarTag(std::string tag);
 	void revisarPtoMuerto(bool hay_return, bool hay_jmpInc);
 	void procesarLineas(std::string linea);
 	void crearGrafo();
 public:
-	explicit GrafoEbpf(std::string archivo);
-	bool hayCiclos() const;
-	bool hayInstrSinUso() const;
-	std::string getNombreArchivo() const;
-	~GrafoEbpf();
+	explicit GrafoEbpf(const std::string &archivo);
+	bool hayCiclos();
+	bool hayInstrSinUso();
+	~GrafoEbpf() {}
 };
+
 #endif

@@ -11,19 +11,18 @@ saltos, los argumentos de ese salto y si la linea de codigo
 contiene alguna etiqueta*/
 class LectorEbpf{
 private:
-	std::list<std::string> jmp;
 	std::string tag;
 	std::string arg1;
 	std::string arg2;
 	bool isJmpInc;
 	bool isReturn;
-	bool contieneTag(std::string linea) const;
-	bool contieneReturn(std::string palabra) const;
-	bool contieneSalto(std::string palabra) const;
-	int cantidadArg(std::string linea) const;
+	bool contieneTag(std::string &linea) const;
+	bool contieneReturn(const std::string &palabra) const;
+	bool contieneSalto(const std::string &palabra);
+	int cantidadArg(std::string &linea) const;
 	void tomarArgs(std::istringstream &ss, int cant_arg);
 public:
-	explicit LectorEbpf(std::string linea);
+	explicit LectorEbpf(std::string &linea);
 	bool hayTag() const;
 	std::string getTag() const;
 	bool hayJmp() const;
@@ -31,7 +30,7 @@ public:
 	bool hayReturn() const;
 	std::string getArg1() const;
 	std::string getArg2() const;
-	~LectorEbpf();
+	~LectorEbpf() {}
 };
 
 #endif

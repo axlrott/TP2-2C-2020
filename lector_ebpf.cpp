@@ -3,36 +3,31 @@
 #include <bits/stdc++.h> 
 #include "lector_ebpf.h"
 
-bool LectorEbpf::contieneTag(std::string linea) const{
-	for (char caracter : linea){
-		if (caracter == ':'){
-			return true;
-		}
-	}
-	return false;
+bool LectorEbpf::contieneTag(std::string &linea) const{
+	auto buscarTag = std::find(linea.begin(), linea.end(), ':');
+	return (buscarTag != linea.end());
 }
 
-bool LectorEbpf::contieneReturn(std::string palabra) const{
-	return (palabra.compare("ret") == 0);
+bool LectorEbpf::contieneReturn(const std::string &palabra) const{
+	return (palabra == "ret");
 }
 
-bool LectorEbpf::contieneSalto(std::string palabra) const{
-	for(std::string salto : jmp){
-		if(palabra.compare(salto) == 0){
-			return true;
-		}
-	}
-	return false;
+bool LectorEbpf::contieneSalto(const std::string &palabra){
+	std::list<std::string> jmp = {"jmp", "ja", "jeq", "jneq",
+	"jne", "jlt", "jle", "jgt", "jge", "jset"};
+	
+	return std::any_of(jmp.begin(), jmp.end(),
+		[&](const std::string &salto) {
+			return salto == palabra;
+		});
 }
 
-int LectorEbpf::cantidadArg(std::string linea) const{
-	int cant_arg = 1;
+bool esUnaComa(char c){
+	return (c == ',');
+}
 
-	for(char caracter : linea){
-		if (caracter == ','){
-			cant_arg++;
-		}
-	}
+int LectorEbpf::cantidadArg(std::string &linea) const{
+	int cant_arg = 1 + std::count_if(linea.begin(), linea.end(), esUnaComa);
 	return cant_arg;
 }
 
@@ -55,8 +50,7 @@ void LectorEbpf::tomarArgs(std::istringstream &separador, int cant_arg){
 	}
 }
 
-LectorEbpf::LectorEbpf(std::string linea){
-	jmp = {"jmp", "ja", "jeq", "jneq","jne", "jlt", "jle", "jgt", "jge", "jset"};
+LectorEbpf::LectorEbpf(std::string &linea){
 	isJmpInc = false;
 	isReturn = false;
 	bool linea_tag = contieneTag(linea);
@@ -103,7 +97,4 @@ std::string LectorEbpf::getArg1() const{
 
 std::string LectorEbpf::getArg2() const{
 	return arg2;
-}
-
-LectorEbpf::~LectorEbpf(){
 }

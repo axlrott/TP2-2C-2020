@@ -2,6 +2,7 @@
 #include <list>
 #include <algorithm>
 #include <string.h>
+#include <functional>
 #include "grafo.h"
 
 Nodo::Nodo(int identificador){
@@ -12,89 +13,86 @@ int Nodo::getId() const{
 	return id;
 }
 
-void Nodo::agregarAdyacencia(Nodo* adyacente){
-	lista_ady.push_back(adyacente);
+void Nodo::agregarAdyacencia(Nodo &nodo){
+	lista_ady.push_back(nodo);
 }
 
-bool Nodo::esAdy(int id){
-	for(Nodo* ady : lista_ady){
-		if (ady->getId() == id){
-			return true;
-		}
-	}
-	return false;
+bool Nodo::esAdy(int id_ady) const{
+	return std::any_of(lista_ady.begin(), lista_ady.end(),
+		[&](const Nodo &nodo) {
+			return nodo.getId() == id_ady;
+		});
 }
 
 int Nodo::cantAdy() const{
 	return (lista_ady.size());
 }
 
-std::list<Nodo*> Nodo::getAdy(){
+std::list<std::reference_wrapper<Nodo>>& Nodo::getAdy(){
 	return lista_ady;
-}
-
-Nodo::~Nodo(){
-}
-
-Grafo::Grafo(){
-	cant_nodos = 0;
 }
 
 void Grafo::addNodo(int id){
 	if (!hayNodo(id)){
-		Nodo* nuevo_nodo = new Nodo(id);
-		lista_nodos.push_back(nuevo_nodo);
+		lista_nodos.emplace_back(id);
 		cant_nodos++;
 	}
 }
 
 bool Grafo::hayNodo(int id) const{
-	for(Nodo* nodo : lista_nodos){
-		if (nodo->getId() == id){
-			return true;
-		}
-	}
-	return false;
+	return std::any_of(lista_nodos.begin(), lista_nodos.end(),
+		[&](const Nodo &nodo) {
+			return nodo.getId() == id;
+		});
 }
 
-Nodo* Grafo::getNodo(int id){
-	for(Nodo* nodo : lista_nodos){
-		if (nodo->getId() == id){
-			return nodo;
+/*Esta funcion se utiliza ya sabiendo que los
+dos nodos buscados estan en la lista*/
+void Grafo::BuscoYAgregoAdy(int id1, int id2){
+	auto ptr_nodo1 = lista_nodos.begin();
+	auto ptr_nodo2 = lista_nodos.begin();
+	while (true) {
+		if (ptr_nodo1->getId() != id1){
+			++ptr_nodo1;
+		} else if (ptr_nodo2->getId() != id2){
+			++ptr_nodo2;
+		} else {
+			break;
 		}
 	}
-	return NULL;
+	ptr_nodo1->agregarAdyacencia(*ptr_nodo2);
 }
 
 void Grafo::addAdy(int id1, int id2){
 	if (hayNodo(id1) && hayNodo(id2)){
-		Nodo* nodo_base = getNodo(id1);
-		Nodo* nodo_ady = getNodo(id2);
-		nodo_base->agregarAdyacencia(nodo_ady);
+		BuscoYAgregoAdy(id1, id2);
 	}
 }
 
-bool Grafo::yaVisite(std::list<int> vistos, Nodo* nodo) const{
-	std::list<int>::iterator iterVis;
-	iterVis = std::find(vistos.begin(), vistos.end(), nodo->getId());
+bool Grafo::yaVisite(std::list<int> vistos, const Nodo &nodo) const{
+	auto iterVis = std::find(vistos.begin(), vistos.end(), nodo.getId());
 	return (iterVis != vistos.end());
 }
 
-bool Grafo::hasCiclo(std::list<int> ids, Nodo* ady, std::list<int> &vistos){
-	for (int id : ids){
-		if (ady->esAdy(id)){
-			return true;	
-		}
+bool Grafo::esAdyList(const Nodo &nodo, std::list<int> &lista_ids){
+	return std::any_of(lista_ids.begin(), lista_ids.end(),
+		[&](const int &id) {
+			return nodo.esAdy(id);
+		});
+}
+
+bool Grafo::hasCiclo(std::list<int> ids, Nodo &ady, std::list<int> &vistos){
+	if (esAdyList(ady, ids)){
+		return true;
 	}
 	if (!yaVisite(vistos, ady)){
-		vistos.push_back(ady->getId());
+		vistos.push_back(ady.getId());
 
-		if (ady->cantAdy() > 0){
-			std::list<Nodo*> list_ady = ady->getAdy();
-			ids.push_back(ady->getId());
+		if (ady.cantAdy() > 0){
+			ids.push_back(ady.getId());
 
-			for (Nodo* nodo : list_ady){
-				if (hasCiclo(ids, nodo, vistos)){
+			for (Nodo &new_ady : ady.getAdy()){;
+				if (hasCiclo(ids, new_ady, vistos)){
 					return true;
 				}
 			}
@@ -107,14 +105,13 @@ int Grafo::busquedaDFS(){
 	int salida = FLAG_OK;
 	std::list<int> lista_ids;
 	std::list<int> visitados;
-	Nodo* nodo_base = lista_nodos.front();
-	std::list<Nodo*> adyacentes = nodo_base->getAdy();
+	int id_nodo_base = lista_nodos.front().getId();
 
-	lista_ids.push_back(nodo_base->getId());
-	visitados.push_back(nodo_base->getId());
-
-	for(Nodo* nodo_ady : adyacentes){
-		if (hasCiclo(lista_ids, nodo_ady, visitados)){
+	lista_ids.push_back(id_nodo_base);
+	visitados.push_back(id_nodo_base);
+	
+	for (Nodo &ady : lista_nodos.front().getAdy()){
+		if (hasCiclo(lista_ids, ady, visitados)){
 			salida = FLAG_CICLO;
 		}
 	}
@@ -123,10 +120,4 @@ int Grafo::busquedaDFS(){
 		salida = FLAG_SINUSO;
 	}
 	return salida;
-}
-
-Grafo::~Grafo(){
-	for(Nodo* nodo : lista_nodos){
-		delete nodo;
-	}
 }

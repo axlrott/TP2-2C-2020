@@ -13,10 +13,6 @@ void Thread::join() {
 	thread.join();
 }
 
-Thread::Thread(Thread&& other) {
-	thread = std::move(other.thread);
-}
-
 Thread& Thread::operator=(Thread&& other) {
 	thread = std::move(other.thread);
 	return *this;

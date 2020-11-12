@@ -24,26 +24,26 @@ La clase **Lector eBPF** va a servir para leer una linea en string que represent
 
 El **Grafo eBPF** va a recibir un string el cual es el nombre del archivo ".bpf" al cual crearle el grafo, esta clase va a contener una clase **Grafo** y una **Lector eBPF**, el cual usara para leer linea por linea el archivo especificado e ira creando el grafo en base a eso, agregando nodos y adyacencias donde sea necesario, cuando termine de leer se cerrara el archivo.
 
-### Archivos:
-
-Esta clase va a servir para almacenar string que representan archivos y tambien para pedir archivos de esa lista, en caso de que la lista este vacia se devolvera un string vacio.
-
 ### Resultados:
 
 La clase **Resultados** sirve para almacenar resultados de un archivo, en el caso de esta clase se le pasara el nombre del archivo y dos boolean que representaran el primero si hubo ciclos y el segundo si hubo instrucciones sin uso. Esta clase esta hecha para ser usada luego de haber pasado un archivo ".bpf" por la clase **Grafo eBPF** y volcar sus resultados en esta clase, cada archivo que sea ingresado se almacenara alfabeticamente y se podra pedir mediante una funcion la muestra de todos los resultados de los archivos pasados por salida estandar.
 
-### Thread y Lock:
+### Monitor Resultados:
 
-La clase Thread va a servir mas que nada para ser la clase padre de la clase procesador y asi poder utilizar Threads por herencia.
-La clase Lock va a ser creado para poder utilizar mutex en las funciones que sea necesario y es utilizada por la clase Monitor Archivos
+Esta clase va a servir para ser el monitor de la clase **Resultados**, en la cual se podra llamar a las funciones de **Resultados**, pero para enviar a la clase resultados se lo hara de forma protegida utilizando un mutex para evitar race conditions.
 
 ### Monitor Archivos:
 
-Esta clase va a servir para ser el monitor de la clase **Archivos** y **Resultados**, cada vez que se reciba archivos de la clase **Archivos** o se manden resultados de archivos a la clase **Resultados** este utiliza un Lock para cuidar que cada thread lo haga de a uno a la vez para que no haya conflicots
+Esta clase va a servir para ser el monitor y a su vez tambien la clase Archivos, en la cual se podra agregar archivos en string y se los podra pedir para que se devuelvan, esta ultima accion se realizara de forma protegida utilizando un mutex para evitar race conditions.
+
+
+### Thread:
+
+La clase Thread va a servir mas que nada para ser la clase padre de la clase procesador y asi poder utilizar Threads por herencia.
 
 ### Procesador:
 
-Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, se va a crear la clase **Grafo eBPF** a la cual se le pasara ese archivo asi se crea el grafo en base a ese archivo que va a ser un ".bpf" y con eso hecho luego se van a pasar los resultados mediante el monitor a la clase **Resultados**, esto se repetira hasta que ya no queden archivos por tomar de la clase **Archivos**
+Procesador va a ser una clase que hereda de **Thread** y esta hecha para que se corran los threads ahi. La misma va a utilizar un monitor para recibir el nombre de los archivos de la clase **Archivos**, se va a crear la clase **Grafo eBPF** a la cual se le pasara ese archivo asi se crea el grafo en base a ese archivo que va a ser un ".bpf" y con eso hecho luego se van a pasar los resultados mediante otro monitor a la clase **Resultados**, esto se repetira hasta que ya no queden archivos por tomar de la clase **Archivos**
 
 ### Main:
 

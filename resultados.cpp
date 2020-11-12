@@ -5,50 +5,24 @@
 #include <algorithm>
 #include <map>
 #include "resultados.h"
+#define OK " GOOD"
+#define CICLO " FAIL: cycle detected"
+#define SIN_USO " FAIL: unused instructions detected"
 
-Resultados::Resultados(){
-	msj_ok = " GOOD";
-	msj_ciclo = " FAIL: cycle detected";
-	msj_sin_uso = " FAIL: unused instructions detected";
-}
-
-void Resultados::agregarEnOrden(std::string archivo_nuevo){
-	if (lista_archivos.size() > 0){
-		std::list<std::string>::iterator it;
-		for (it = lista_archivos.begin(); it != lista_archivos.end(); ++it){
-			std::string archivo = *it;
-			if (archivo > archivo_nuevo){
-				lista_archivos.insert(it, archivo_nuevo);
-				return;
-			}
-		}
-	}
-	lista_archivos.push_back(archivo_nuevo);
-}
-
-void Resultados::agregarArchivo(std::string archv, bool ciclos, bool sin_uso){
-	agregarEnOrden(archv);
+void Resultados::agregarArchivo(std::string &archv, bool ciclos, bool sin_uso){
+	set_archivos.insert(archv);
 	if(ciclos){
 		dic_archivos[archv] = CICLO;
 	}else if (sin_uso){
-		dic_archivos[archv] = SINUSO;
+		dic_archivos[archv] = SIN_USO;
 	}else{
-		dic_archivos[archv] = OK;;
+		dic_archivos[archv] = OK;
 	}
 }
 
 void Resultados::mostrarResultados() const{
-	for (std::string archivo : lista_archivos){
-		int resultado = dic_archivos.at(archivo);
-		if (resultado == OK){
-			std::cout << archivo << msj_ok << std::endl;
-		} else if (resultado == CICLO){
-			std::cout << archivo << msj_ciclo << std::endl;
-		} else {
-			std::cout << archivo << msj_sin_uso << std::endl;
-		}
+	for (const std::string &archv : set_archivos){
+		std::string resultado = dic_archivos.at(archv);
+		std::cout << archv << resultado << std::endl;
 	}
-}
-
-Resultados::~Resultados(){
 }

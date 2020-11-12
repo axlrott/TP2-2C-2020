@@ -2,6 +2,7 @@
 #define THREAD_T
 
 #include <thread>
+#include <utility>
 
 /*Clase Thread basada en una vista en los
 ejemplos interactivos de la materia, va a
@@ -17,7 +18,7 @@ public:
 	virtual ~Thread() {}
 	Thread(const Thread&) = delete;
 	Thread& operator=(const Thread&) = delete;
-	Thread(Thread&& other);
+	Thread(Thread&& other): thread(std::move(other.thread)) {}
 	Thread& operator=(Thread&& other);
 };
 

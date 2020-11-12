@@ -3,27 +3,21 @@
 
 #include <iostream>
 #include <string>
-#include <list>
+#include <set>
 #include <map>
 #include <mutex>
-
-enum TIPORESULTADO {OK, CICLO, SINUSO};
 
 /*Clase Resultado que almacena archivos y sus resultados
 en base a si tuvieron ciclos o instrucciones sin uso*/
 class Resultados{
 private:
-	std::list<std::string> lista_archivos;
-	std::map<std::string, int> dic_archivos;
-	std::string msj_ok;
-	std::string msj_ciclo;
-	std::string msj_sin_uso;
-	void agregarEnOrden(std::string archivo_nuevo);
+	std::set<std::string> set_archivos;
+	std::map<std::string, std::string> dic_archivos;
 public:
-	Resultados();
-	void agregarArchivo(std::string archv, bool ciclos, bool sin_uso);
+	Resultados() {}
+	void agregarArchivo(std::string &archv, bool ciclos, bool sin_uso);
 	void mostrarResultados() const;
-	~Resultados();
+	~Resultados() {}
 };
 
 #endif
